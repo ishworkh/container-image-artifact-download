@@ -1,0 +1,42 @@
+{
+  "name": "container-image-artifact-download",
+  "version": "1.0.0",
+  "description": "Github action to download container image uploaded by container-image-artifact-upload action",
+  "scripts": {
+    "build": "./node_modules/.bin/webpack --mode production --entry ./src/main.js --target node --output-path dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ishworkh/container-image-artifact-download"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "docker",
+    "podman",
+    "image",
+    "artifact",
+    "download"
+  ],
+  "author": "Ishwor Khadka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ishworkh/container-image-artifact-download/issues"
+  },
+  "homepage": "https://github.com/ishworkh/container-image-artifact-download",
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@actions/core": "^1.9",
+    "@actions/github": "^5.1",
+    "container-image-artifact": "github:ishworkh/container-image-artifact#semver:^1.0",
+    "ncc": "^0.2.0",
+    "original-fs": "^1.2"
+  },
+  "devDependencies": {
+    "webpack": "^5.74",
+    "webpack-cli": "^4.10"
+  }
+}
