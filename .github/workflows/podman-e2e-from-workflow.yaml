@@ -1,0 +1,93 @@
+name: Podman - E2E Download Image From Another Workflow
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - "main"
+jobs:
+  test_download_no_filters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
+          container_engine: "podman"
+          repository: "${{ vars.SOURCE_REPOSITORY }}"
+          workflow: "${{ vars.WORKFLOW_NAME }}"
+          token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
+
+      - name: Test podman image is present
+        run: |
+          podman image inspect ${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}
+  
+  test_download_filter_run_id:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
+          container_engine: "podman"
+          repository: "${{ vars.SOURCE_REPOSITORY }}"
+          workflow: "${{ vars.WORKFLOW_NAME }}"
+          token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
+          workflow_run_id: "${{ vars.WORKFLOW_RUN_ID }}"
+          workflow_event: "RandomNoEffect"
+          commit_sha: "noeffecteither"
+
+      - name: Test podman image is present
+        run: |
+          podman image inspect ${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}
+  
+  test_download_other_filters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
+          container_engine: "podman"
+          repository: "${{ vars.SOURCE_REPOSITORY }}"
+          workflow: "${{ vars.WORKFLOW_NAME }}"
+          token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
+          workflow_event: "${{ vars.WORKFLOW_EVENT }}"
+          branch: "${{ vars.BRANCH }}"
+          commit_sha: "${{ vars.COMMIT_SHA }}"
+          workflow_conclusion: "${{ vars.WORKFLOW_CONCLUSION }}"
+
+      - name: Test podman image is present
+        run: |
+          podman image inspect ${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}
+  
+  test_download_filter_failed_conclusion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
+          container_engine: "podman"
+          repository: "${{ vars.SOURCE_REPOSITORY }}"
+          workflow: "${{ vars.WORKFLOW_NAME }}"
+          token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
+          workflow_conclusion: "${{ vars.FAILED_WORKFLOW_CONCLUSION }}"
+
+      - name: Test podman image is present
+        run: |
+          podman image inspect ${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}
