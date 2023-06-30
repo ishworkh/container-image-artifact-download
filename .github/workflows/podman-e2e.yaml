@@ -22,7 +22,7 @@ jobs:
         uses: ishworkh/container-image-artifact-upload@v1.0.0
         with:
           image: "test_image:${{ github.run_id }}"
-          conatainer_engine: "podman"
+          container_engine: "podman"
 
   run-e2e-test:
     needs: upload-test-image
@@ -35,7 +35,7 @@ jobs:
         uses: ./
         with:
           image: "test_image:${{ github.run_id }}"
-          conatainer_engine: "podman"
+          container_engine: "podman"
 
       - name: Test podman image is present
         run: |
