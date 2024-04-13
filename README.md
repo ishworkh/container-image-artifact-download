@@ -68,7 +68,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
 
@@ -82,7 +82,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
         container_engine: "podman"
@@ -99,7 +99,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -116,7 +116,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -134,7 +134,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -155,7 +155,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.0.0
+      uses: ishworkh/container-image-artifact-download@v1.1.1
       with:
         image: "test_image:latest"
         repository: "owner/my-repo"
@@ -164,6 +164,14 @@ jobs:
 ```
 
 ## Changelogs
+
+### `v1.1.1`
+
+- Fix README
+
+### `v1.1.0`
+
+- Update for nodejs 20
 
 ### `v1.0.0`
 
