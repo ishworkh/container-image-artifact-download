@@ -45,5 +45,5 @@ outputs:
   download_path:
     description: Download path of the content of the artifact
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/main.js"
