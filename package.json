@@ -31,7 +31,7 @@
   "dependencies": {
     "@actions/core": "^1.10",
     "container-image-artifact": "github:ishworkh/container-image-artifact#update_dependencies",
-    "ncc": "^0.3.6",
+    "ncc": "^0.2.0",
     "original-fs": "^1.2"
   },
   "devDependencies": {
