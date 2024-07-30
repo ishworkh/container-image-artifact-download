@@ -1,6 +1,6 @@
 {
   "name": "container-image-artifact-download",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Github action to download container image uploaded by container-image-artifact-upload action",
   "scripts": {
     "build": "./node_modules/.bin/webpack --mode production --entry ./src/main.js --target node --output-path dist/"
@@ -29,14 +29,13 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@actions/core": "^1.9",
-    "@actions/github": "^5.1",
-    "container-image-artifact": "github:ishworkh/container-image-artifact#semver:^1.0",
-    "ncc": "^0.2.0",
+    "@actions/core": "^1.10",
+    "container-image-artifact": "github:ishworkh/container-image-artifact#update_dependencies",
+    "ncc": "^0.3.6",
     "original-fs": "^1.2"
   },
   "devDependencies": {
-    "webpack": "^5.74",
-    "webpack-cli": "^4.10"
+    "webpack": "^5.93",
+    "webpack-cli": "^5.1"
   }
 }
