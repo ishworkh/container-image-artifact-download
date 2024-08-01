@@ -68,7 +68,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
 
@@ -82,7 +82,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
         container_engine: "podman"
@@ -99,7 +99,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -116,7 +116,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -134,7 +134,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
         workflow: "Some Another Workflow"
@@ -155,7 +155,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download image
-      uses: ishworkh/container-image-artifact-download@v1.1.1
+      uses: ishworkh/container-image-artifact-download@v2.0.0
       with:
         image: "test_image:latest"
         repository: "owner/my-repo"
@@ -164,6 +164,14 @@ jobs:
 ```
 
 ## Changelogs
+
+### `v2.0.0`
+
+- Use v4 of @actions/download-artifact
+- Update other dependencies
+
+Migration:
+- Compatiable with only >=v2.0.0 for ishworkh/container-image-artifact-upload
 
 ### `v1.1.1`
 
