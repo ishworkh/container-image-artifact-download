@@ -6,4 +6,5 @@ exports.writeOutput = (name, val) => core.setOutput(name, val);
 
 exports.fail = (msg) => core.setFailed(msg);
 
+
 exports.debug = (msg) => core.debug(msg);
