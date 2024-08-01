@@ -20,7 +20,7 @@ jobs:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           container_engine: "podman"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Podman"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
 
       - name: Test podman image is present
@@ -39,9 +39,9 @@ jobs:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           container_engine: "podman"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Podman"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
-          workflow_run_id: "${{ vars.WORKFLOW_RUN_ID }}"
+          workflow_run_id: "${{ vars.PODMAN_WORKFLOW_RUN_ID }}"
           workflow_event: "RandomNoEffect"
           commit_sha: "noeffecteither"
 
@@ -61,7 +61,7 @@ jobs:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           container_engine: "podman"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Podman"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
           workflow_event: "${{ vars.WORKFLOW_EVENT }}"
           branch: "${{ vars.BRANCH }}"
@@ -84,7 +84,7 @@ jobs:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           container_engine: "podman"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Podman"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
           workflow_conclusion: "${{ vars.FAILED_WORKFLOW_CONCLUSION }}"
 

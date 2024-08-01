@@ -19,7 +19,7 @@ jobs:
         with:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Docker"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
 
       - name: Test docker image is present
@@ -37,9 +37,9 @@ jobs:
         with:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Docker"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
-          workflow_run_id: "${{ vars.WORKFLOW_RUN_ID }}"
+          workflow_run_id: "${{ vars.DOCKER_WORKFLOW_RUN_ID }}"
           workflow_event: "RandomNoEffect"
           commit_sha: "noeffecteither"
 
@@ -58,7 +58,7 @@ jobs:
         with:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Docker"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
           workflow_event: "${{ vars.WORKFLOW_EVENT }}"
           branch: "${{ vars.BRANCH }}"
@@ -80,10 +80,10 @@ jobs:
         with:
           image: "${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}"
           repository: "${{ vars.SOURCE_REPOSITORY }}"
-          workflow: "${{ vars.WORKFLOW_NAME }}"
+          workflow: "Generate Image Docker"
           token: "${{ secrets.ARTIFACT_DOWNLOADER_TOKEN }}"
           workflow_conclusion: "${{ vars.FAILED_WORKFLOW_CONCLUSION }}"
-
+     
       - name: Test docker image is present
         run: |
           docker image inspect ${{ vars.IMAGE_NAME }}:${{ vars.IMAGE_TAG }}
