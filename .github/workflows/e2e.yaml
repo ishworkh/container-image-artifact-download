@@ -33,8 +33,13 @@ jobs:
         uses: ./
         with:
           image: "test_image:${{ github.run_id }}"
+          container_engine: ${{ inputs.engine }}
+
+      - name: List all images
+        if:  runner.debug == '1'
+        run: |
+          ${{ inputs.engine }} images
 
       - name: Test image is present
         run: |
-          ${{ inputs.engine }} images
           ${{ inputs.engine }} image inspect test_image:${{ github.run_id }}
