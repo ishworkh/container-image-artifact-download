@@ -57,6 +57,7 @@ jobs:
 
       - name: Test image is present
         run: |
+          ${{ inputs.engine }} images
           ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}
   
   test_download_filter_run_id:
@@ -79,6 +80,7 @@ jobs:
 
       - name: Test image is present
         run: |
+          ${{ inputs.engine }} images
           ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}
   
   test_download_other_filters:
@@ -102,4 +104,5 @@ jobs:
 
       - name: Test image is present
         run: |
+          ${{ inputs.engine }} images
           ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}

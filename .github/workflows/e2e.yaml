@@ -34,6 +34,7 @@ jobs:
         with:
           image: "test_image:${{ github.run_id }}"
 
-      - name: Test docker image is present
+      - name: Test image is present
         run: |
+          ${{ inputs.engine }} images
           ${{ inputs.engine }} image inspect test_image:${{ github.run_id }}
