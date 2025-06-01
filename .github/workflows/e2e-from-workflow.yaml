@@ -1,0 +1,123 @@
+name: E2E Download Image From Another Workflow
+on:
+  workflow_call:
+    inputs:
+      engine:
+        type: string
+        required: true
+jobs:
+  build_variable_names:
+    runs-on: ubuntu-latest
+    outputs:
+      var_branch: ${{ steps.build_names.outputs.var_branch }}
+      var_commit_sha: ${{ steps.build_names.outputs.var_commit_sha }}
+      var_workflow_run_id: ${{ steps.build_names.outputs.var_workflow_run_id }}
+      var_image_name: ${{ steps.build_names.outputs.var_image_name }}
+      var_image_tag: ${{ steps.build_names.outputs.var_image_tag }}
+      var_source_repository: ${{ steps.build_names.outputs.var_source_repository }}
+      var_workflow_conclusion: ${{ steps.build_names.outputs.var_workflow_conclusion }}
+      var_workflow_event: ${{ steps.build_names.outputs.var_workflow_event }}
+      var_workflow_name: ${{ steps.build_names.outputs.var_workflow_name }}
+      var_artifact_downloader_token: ${{ steps.build_names.outputs.var_artifact_downloader_token }}
+    steps:
+      - name: Build prefix
+        id: build_prefix
+        run: |
+          uppercase=$(echo ${{ inputs.engine }} | tr '[a-z]' '[A-Z]')
+          echo "result=$uppercase" >> "$GITHUB_OUTPUT"
+
+      - name: Build names
+        id: build_names
+        run: |
+          echo "var_branch=${{ steps.build_prefix.outputs.result }}_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "var_commit_sha=${{ steps.build_prefix.outputs.result }}_COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "var_workflow_run_id=${{ steps.build_prefix.outputs.result }}_WORKFLOW_RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "var_image_name=${{ steps.build_prefix.outputs.result }}_IMAGE_NAME" >> "$GITHUB_OUTPUT"
+          echo "var_image_tag=${{ steps.build_prefix.outputs.result }}_IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          echo "var_source_repository=${{ steps.build_prefix.outputs.result }}_SOURCE_REPOSITORY" >> "$GITHUB_OUTPUT"
+          echo "var_workflow_conclusion=${{ steps.build_prefix.outputs.result }}_WORKFLOW_CONCLUSION" >> "$GITHUB_OUTPUT"
+          echo "var_workflow_event=${{ steps.build_prefix.outputs.result }}_WORKFLOW_EVENT" >> "$GITHUB_OUTPUT"
+          echo "var_workflow_name=${{ steps.build_prefix.outputs.result }}_WORKFLOW_NAME" >> "$GITHUB_OUTPUT"
+          echo "var_artifact_downloader_token=${{ steps.build_prefix.outputs.result }}_ARTIFACT_DOWNLOADER_TOKEN" >> "$GITHUB_OUTPUT"
+
+  test_download_no_filters:
+    needs: build_variable_names
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          container_engine: ${{ inputs.engine }}
+          image: "${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}"
+          repository: "${{ vars[needs.build_variable_names.outputs.var_source_repository] }}"
+          workflow: "${{ vars[needs.build_variable_names.outputs.var_workflow_name] }}"
+          token: "${{ secrets[needs.build_variable_names.outputs.var_artifact_downloader_token] }}"
+
+      - name: List all images
+        if:  runner.debug == '1'
+        run: |
+          ${{ inputs.engine }} images
+
+      - name: Test image is present
+        run: |
+          ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}
+  
+  test_download_filter_run_id:
+    needs: build_variable_names
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          container_engine: ${{ inputs.engine }}
+          image: "${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}"
+          repository: "${{ vars[needs.build_variable_names.outputs.var_source_repository] }}"
+          workflow: "${{ vars[needs.build_variable_names.outputs.var_workflow_name] }}"
+          token: "${{ secrets[needs.build_variable_names.outputs.var_artifact_downloader_token] }}"
+          workflow_run_id: "${{ vars[needs.build_variable_names.outputs.var_workflow_run_id] }}"
+          workflow_event: "RandomNoEffect"
+          commit_sha: "noeffecteither"
+
+      - name: List all images
+        if:  runner.debug == '1'
+        run: |
+          ${{ inputs.engine }} images
+
+      - name: Test image is present
+        run: |
+          ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}
+  
+  test_download_other_filters:
+    needs: build_variable_names
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          container_engine: ${{ inputs.engine }}
+          image: "${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}"
+          repository: "${{ vars[needs.build_variable_names.outputs.var_source_repository] }}"
+          workflow: "${{ vars[needs.build_variable_names.outputs.var_workflow_name] }}"
+          token: "${{ secrets[needs.build_variable_names.outputs.var_artifact_downloader_token] }}"
+          workflow_event: "${{ vars[needs.build_variable_names.outputs.var_workflow_event] }}"
+          branch: "${{ vars[needs.build_variable_names.outputs.var_branch] }}"
+          commit_sha: "${{ vars[needs.build_variable_names.outputs.var_commit_sha] }}"
+          workflow_conclusion: "${{ vars[needs.build_variable_names.outputs.var_workflow_conclusion] }}"
+
+      - name: List all images
+        if:  runner.debug == '1'
+        run: |
+          ${{ inputs.engine }} images
+
+      - name: Test image is present
+        run: |
+          ${{ inputs.engine }} image inspect ${{ vars[needs.build_variable_names.outputs.var_image_name] }}:${{ vars[needs.build_variable_names.outputs.var_image_tag] }}
