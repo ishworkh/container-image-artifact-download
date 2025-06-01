@@ -1,0 +1,39 @@
+name: E2E Test
+on:
+  workflow_call:
+    inputs:
+      engine:
+        type: string
+        required: true
+jobs:
+  upload-test-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build test image
+        run: |
+          ${{ inputs.engine }} build -t test_image:${{ github.run_id }} -<<EOF
+            FROM busybox
+            RUN touch abc.txt
+          EOF
+
+      - name: Upload image
+        uses: ishworkh/container-image-artifact-upload@main
+        with:
+          image: "test_image:${{ github.run_id }}"
+          container_engine: ${{ inputs.engine }}
+
+  run-e2e-test:
+    needs: upload-test-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "test_image:${{ github.run_id }}"
+
+      - name: Test docker image is present
+        run: |
+          ${{ inputs.engine }} image inspect test_image:${{ github.run_id }}

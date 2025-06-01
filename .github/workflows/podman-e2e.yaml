@@ -8,41 +8,8 @@ on:
     branches:
       - "main"
 jobs:
-  upload-test-image:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build test image
-        run: |
-          podman build -t test_image:${{ github.run_id }} -<<EOF
-            FROM busybox
-            RUN touch abc.txt
-          EOF
-
-      - name: Upload image
-        uses: ishworkh/container-image-artifact-upload@update_dependencies
-        with:
-          image: "test_image:${{ github.run_id }}"
-          container_engine: "podman"
-
-  run-e2e-test:
-    needs: upload-test-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Download image
-        uses: ./
-        with:
-          image: "test_image:${{ github.run_id }}"
-          container_engine: "podman"
-
-      - name: List all images
-        if:  runner.debug == '1'
-        run: |
-          podman images
-
-      - name: Test podman image is present
-        run: |
-          podman images
-          podman image inspect test_image:${{ github.run_id }}
+  call-e2e-test:
+    uses: ./.github/workflows/e2e.yaml
+    with:
+      engine: "podman"
+    secrets: inherit
