@@ -11,5 +11,5 @@ jobs:
   call_e2e_from_workflow:
     uses: ./.github/workflows/e2e-from-workflow.yaml
     with:
-      engine: docker
+      engine: "docker"
     secrets: inherit
