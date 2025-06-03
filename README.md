@@ -50,6 +50,10 @@ It supports downloading image artifacts from
 
 **Optional** Filter workflow runs based workflow event.
 
+### `download_tmp_dir`
+
+**Optional** Temporary directory to download assets (default to OS temp dir). Eg. `${{ runner.temp }}`.
+
 ## Outputs
 
 ### `download_path`

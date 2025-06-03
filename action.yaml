@@ -20,6 +20,10 @@ inputs:
     description: Github token with read permission to artifacts in given repo.
     required: false
     default: ""
+  download_tmp_dir:
+    description: Temporary directory to download assets (default to OS temp dir).
+    required: false
+    default: ""
 
   workflow_conclusion:
     description: Conclusion for an workflow run.

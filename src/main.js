@@ -1,4 +1,3 @@
-
 const { getDownloader, createArtifactDownloader, createOctokitArtifactDownloader } = require('container-image-artifact');
 
 const { getInput, writeOutput, debug, fail } = require('./actions_io');
@@ -16,6 +15,7 @@ const INPUT_TOKEN = 'token';
 const INPUT_WORKFLOW_CONCLUSION = "workflow_conclusion";
 const INPUT_COMMIT_SHA = "commit_sha";
 const INPUT_BRANCH = "branch";
+const INPUT_DOWNLOAD_TMP_DIR = "download_tmp_dir";
 const INPUT_WORKFLOW_EVENT = "workflow_event";
 const INPUT_WORKFLOW_RUN_ID = "workflow_run_id";
 
@@ -63,15 +63,16 @@ async function runAction() {
     const imageName = getInput(INPUT_IMAGE, true);
     const containerEngineName = getInput(INPUT_CONTAINER_ENGINE);
     debug(`Using ${containerEngineName}`);
-    debug(`Starting to download image ${imageName}`);
 
     const repository = getInput(INPUT_REPOSITORY) || getRepositoryName();
     const workflow = getInput(INPUT_WORKFLOW) || getWorkflowName();
+    const dir = getInput(INPUT_DOWNLOAD_TMP_DIR) || undefined;
 
+    debug(`Starting to download image ${imageName} to ${dir}`);
     if (getRepositoryName() == repository && getWorkflowName() == workflow) {
         debug(`Downloading image artifact from the same workflow. `)
         const download = getDownloader(createArtifactDownloader(), containerEngineName);
-        const downloadPath = await download(imageName);
+        const downloadPath = await download(imageName, dir);
 
         writeOutput(OUTPUT_DOWNLOAD_PATH, downloadPath);
         return;
@@ -93,7 +94,7 @@ async function runAction() {
         token, owner, repo, workflow,
         createWorkflowRunFilter()
     ), containerEngineName)
-    const downloadPath = await download(imageName);
+    const downloadPath = await download(imageName, dir);
     writeOutput(OUTPUT_DOWNLOAD_PATH, downloadPath);
 }
 
