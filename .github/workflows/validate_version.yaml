@@ -1,0 +1,54 @@
+name: Validate package version
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+jobs:
+  validate_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Read version from package.json
+        id: read_version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      
+      - name: Latest release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        run: |
+          gh release view --json tagName
+
+      - name: Get latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        id: latest_tag
+        run: |
+          response=$(gh release view --json tagName --jq ".tagName")
+          echo "tag=$response" >> "$GITHUB_OUTPUT"
+
+      - name: Parse next version
+        id: next_version
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: '${{ steps.read_version.outputs.version }}'
+      
+      - name: Parse current version
+        id: current_version
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: '${{ steps.latest_tag.outputs.tag }}'
+          version_extractor_regex: 'v(.*)$'
+      
+      - name: Check next version is greater
+        if: ${{ steps.next_version.outputs.major <= steps.current_version.outputs.major &&  steps.next_version.outputs.minor <= steps.current_version.outputs.minor && steps.next_version.outputs.patch <= steps.current_version.outputs.patch }}
+        run: |
+          echo "Next version ${{ steps.read_version.outputs.version }} is same or lower than current version ${{ steps.latest_tag.outputs.tag }}"
+          exit 1
