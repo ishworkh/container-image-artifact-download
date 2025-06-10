@@ -30,6 +30,10 @@ It supports downloading image artifacts from
 
 **Optional** Token with enough permissions to download artifact(s) from repo and workflow. It is required if `workflow` is set to different workflow than the currently running.
 
+### `download_tmp_dir`
+
+**Optional** Temporary directory to download assets temporarily before loading to the container engine (default to OS temp dir).
+
 ### `workflow_run_id`
 
 **Optional** Filter workflow runs based workflow event. This takes the precedence over all filters if it is set.
@@ -168,6 +172,10 @@ jobs:
 ```
 
 ## Changelogs
+
+### `v2.1.0`
+
+- Add download_tmp_dir input
 
 ### `v2.0.0`
 

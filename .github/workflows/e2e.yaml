@@ -43,3 +43,26 @@ jobs:
       - name: Test image is present
         run: |
           ${{ inputs.engine }} image inspect test_image:${{ github.run_id }}
+
+  run-e2e-test-runner-temp:
+    needs: upload-test-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download image
+        uses: ./
+        with:
+          image: "test_image:${{ github.run_id }}"
+          container_engine: ${{ inputs.engine }}
+          download_tmp_dir: ${{ runner.temp }}
+
+      - name: List all images
+        if:  runner.debug == '1'
+        run: |
+          ${{ inputs.engine }} images
+
+      - name: Test image is present
+        run: |
+          ${{ inputs.engine }} image inspect test_image:${{ github.run_id }}
