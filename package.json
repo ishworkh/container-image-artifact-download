@@ -1,6 +1,6 @@
 {
   "name": "container-image-artifact-download",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Github action to download container image uploaded by container-image-artifact-upload action",
   "scripts": {
     "build": "./node_modules/.bin/webpack --mode production --entry ./src/main.js --target node --output-path dist/"
